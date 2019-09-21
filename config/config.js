@@ -40,15 +40,54 @@ var config = {
     {
       module: "MMM-AssistantMk2",
       position: "top_right",
+      useGactionCLI: true,
+      projectId: "nec-investigation!", // need update to own project id
+      deviceModelId: "nec-investigation-nec-investigate-demo-mjujeb", // need update to own deviceModelId
+      deviceInstanceId: "my_led_1", // need update to own deviceInstanceId
       config: {
+        // useWelcomeMessage: "brief today",
+        responseScreen: true,
         record: {
-          recordProgram : "arecord",  
-          device        : "plughw:1",
+          recordProgram : "rec",  
+          // device        : "plughw:1",
         },
     
         notifications: {
           ASSISTANT_ACTIVATED: "HOTWORD_PAUSE",
           ASSISTANT_DEACTIVATED: "HOTWORD_RESUME",
+        },
+
+        action: {
+          "com.example.intents.REBOOT" : {
+            command: "REBOOT"
+          },
+          "com.example.intents.PAGE" : {
+            command: "PAGE"
+          },
+        },
+
+        command: {
+          "REBOOT": {
+            notification:(params)=>{
+              console.log('< Recipe> notification', params);
+              if (params.number) {
+                return "PAGE_SELECT"
+              } else if (params.incordec == "INC") {
+                return "PAGE_INCREMENT"
+              } else {
+                return "PAGE_DECREMENT"
+              }
+            },
+            payload:()=>{
+              console.log('< Recipe> payload decision', params);
+              if (params.number) {
+                return params.number
+              } else {
+                return null
+              }
+            }
+          },
+        
         },
       }
     },
@@ -102,7 +141,41 @@ var config = {
 		// 		broadcastNewsFeeds: true,
 		// 		broadcastNewsUpdates: true
 		// 	}
-		// },
+    // },
+    
+    {
+      module: "MMM-Hotword",
+      position: "bottom_right",
+      config: {
+        chimeOnFinish: null,
+        mic: {
+          recordProgram: "rec",
+          // device: "plughw:1"
+        },
+        models: [
+          {
+            hotwords    : "computer",
+            file        : "computer.umdl",
+            sensitivity : "0.5",
+          },
+        ],
+        commands: {
+          "computer": {
+            notificationExec: {
+              notification: "ASSISTANT_ACTIVATE",
+              payload: (detected, afterRecord) => {
+                return {profile:"default"}
+              }
+            },
+            restart:false,
+            afterRecordLimit:0
+          }
+        }
+      }
+    },
+
+
+
 	]
 
 };

@@ -41,7 +41,7 @@ var config = {
       module: "MMM-AssistantMk2",
       position: "top_right",
       useGactionCLI: true,
-      projectId: "nec-investigation!", // need update to own project id
+      projectId: "nec-investigation", // need update to own project id
       deviceModelId: "nec-investigation-nec-investigate-demo-mjujeb", // need update to own deviceModelId
       deviceInstanceId: "my_led_1", // need update to own deviceInstanceId
       config: {

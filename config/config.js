@@ -49,7 +49,7 @@ var config = {
         responseScreen: true,
         record: {
           recordProgram : "rec",  
-          // device        : "plughw:1",
+          threshold: 0,
         },
     
         notifications: {
@@ -64,10 +64,12 @@ var config = {
           "com.example.intents.PAGE" : {
             command: "PAGE"
           },
+          "com.example.commands.Number" : {
+            command: "NUMBER"
+          },
         },
-
         command: {
-          "REBOOT": {
+          "PAGE": {
             notification:(params)=>{
               console.log('< Recipe> notification', params);
               if (params.number) {
@@ -87,9 +89,27 @@ var config = {
               }
             }
           },
-        
+  
+          "NUMBER": {
+            notificationExec: {
+              notification: (params, key) => {
+                console.log('params', params)
+                console.log('key', key)
+                return "TEST_EVENT_NUMBER";
+              },
+            },
+            shellExec: {
+              exec: (params, key) => {
+                console.log('shell exec');
+                return "echo '!!!!!!!!!!!!!!!!'"
+              },
+              options: (params, key)=> {
+                return "now"
+              },
+            }
+          }
         },
-      }
+      },
     },
 		// {
 		// 	module: "calendar",

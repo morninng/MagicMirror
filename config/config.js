@@ -26,6 +26,20 @@ var config = {
 	units: "metric",
 
 	modules: [
+
+
+    {
+      module: 'MMM-pages',
+      config: {
+              modules:
+                  [[  "newsfeed", "compliments"],
+                   [ "calendar" ]],
+              fixed: ["MMM-AssistantMk2", "MMM-Hotword"],
+      }
+    },
+
+
+
 		// {
 		// 	module: "alert",
 		// },
@@ -95,7 +109,22 @@ var config = {
               notification: (params, key) => {
                 console.log('params', params)
                 console.log('key', key)
-                return "TEST_EVENT_NUMBER";
+                if(params.number && !isNaN(params.number)){
+                  console.log('PAGE_CHANGED execute in config');
+                  return "PAGE_CHANGED";
+                }else{
+                  console.log('number is not number in notification');
+                }
+              },
+              payload: (params, key)=> {
+                console.log('options params', params)
+                console.log('options key', key)
+                if(params.number && !isNaN(params.number)){
+                  console.log('PAGE_CHANGED execute in config', params.number);
+                  return Number(params.number);
+                }else{
+                  console.log('number is not number in payload');
+                }
               },
             },
             shellExec: {
@@ -111,22 +140,22 @@ var config = {
         },
       },
     },
-		// {
-		// 	module: "calendar",
-		// 	header: "US Holidays",
-		// 	position: "top_left",
-		// 	config: {
-		// 		calendars: [
-		// 			{
-		// 				symbol: "calendar-check",
-		// 				url: "webcal://www.calendarlabs.com/ical-calendar/ics/76/US_Holidays.ics"					}
-		// 		]
-		// 	}
-		// },
-		// {
-		// 	module: "compliments",
-		// 	position: "lower_third"
-		// },
+		{
+			module: "calendar",
+			header: "US Holidays",
+			position: "top_left",
+			config: {
+				calendars: [
+					{
+						symbol: "calendar-check",
+						url: "webcal://www.calendarlabs.com/ical-calendar/ics/76/US_Holidays.ics"					}
+				]
+			}
+		},
+		{
+			module: "compliments",
+			position: "top_left"
+		},
 		// {
 		// 	module: "currentweather",
 		// 	position: "top_right",
@@ -138,7 +167,7 @@ var config = {
 		// },
 		// {
 		// 	module: "weatherforecast",
-		// 	position: "top_right",
+		// 	position: "top_left",
 		// 	header: "Weather Forecast",
 		// 	config: {
 		// 		location: "New York",
@@ -146,22 +175,22 @@ var config = {
 		// 		appid: "YOUR_OPENWEATHER_API_KEY"
 		// 	}
 		// },
-		// {
-		// 	module: "newsfeed",
-		// 	position: "bottom_bar",
-		// 	config: {
-		// 		feeds: [
-		// 			{
-		// 				title: "New York Times",
-		// 				url: "http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"
-		// 			}
-		// 		],
-		// 		showSourceTitle: true,
-		// 		showPublishDate: true,
-		// 		broadcastNewsFeeds: true,
-		// 		broadcastNewsUpdates: true
-		// 	}
-    // },
+		{
+			module: "newsfeed",
+			position: "middle_center",
+			config: {
+				feeds: [
+					{
+						title: "New York Times",
+						url: "http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+					}
+				],
+				showSourceTitle: true,
+				showPublishDate: true,
+				broadcastNewsFeeds: true,
+				broadcastNewsUpdates: true
+			}
+    },
     
     {
       module: "MMM-Hotword",

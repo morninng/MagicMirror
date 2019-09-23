@@ -26,19 +26,18 @@ var config = {
 	units: "metric",
 
 	modules: [
-
-
     {
       module: 'MMM-pages',
       config: {
               modules:
-                  [[  "newsfeed", "compliments"],
-                   [ "calendar" ]],
+                  [
+                   ["newsfeed", "compliments"],
+                   [ "calendar" ],
+                   ["helloworld"]
+                  ],
               fixed: ["MMM-AssistantMk2", "MMM-Hotword"],
       }
     },
-
-
 
 		// {
 		// 	module: "alert",
@@ -139,6 +138,11 @@ var config = {
           }
         },
       },
+    },
+
+		{
+			module: "helloworld",
+			position: "middle_center"
     },
 		{
 			module: "calendar",

@@ -82,27 +82,6 @@ var config = {
           },
         },
         command: {
-          "PAGE": {
-            notification:(params)=>{
-              console.log('< Recipe> notification', params);
-              if (params.number) {
-                return "PAGE_SELECT"
-              } else if (params.incordec == "INC") {
-                return "PAGE_INCREMENT"
-              } else {
-                return "PAGE_DECREMENT"
-              }
-            },
-            payload:()=>{
-              console.log('< Recipe> payload decision', params);
-              if (params.number) {
-                return params.number
-              } else {
-                return null
-              }
-            }
-          },
-  
           "NUMBER": {
             notificationExec: {
               notification: (params, key) => {

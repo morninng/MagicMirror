@@ -26,17 +26,103 @@ var config = {
 	units: "metric",
 
 	modules: [
-		{
-			module: "alert",
-		},
-		{
-			module: "updatenotification",
-			position: "top_bar"
-		},
+    {
+      module: 'MMM-pages',
+      config: {
+              modules:
+                  [
+                   ["newsfeed", "compliments"],
+                   [ "calendar" ],
+                   ["helloworld"]
+                  ],
+              fixed: ["MMM-AssistantMk2", "MMM-Hotword"],
+      }
+    },
+
+		// {
+		// 	module: "alert",
+		// },
+		// {
+		// 	module: "updatenotification",
+		// 	position: "top_bar"
+		// },
 		{
 			module: "clock",
 			position: "top_left"
-		},
+    },
+    {
+      module: "MMM-AssistantMk2",
+      position: "top_right",
+      useGactionCLI: true,
+      projectId: "nec-investigation", // need update to own project id
+      deviceModelId: "nec-investigation-nec-investigate-demo-mjujeb", // need update to own deviceModelId
+      deviceInstanceId: "my_led_1", // need update to own deviceInstanceId
+      config: {
+        // useWelcomeMessage: "brief today",
+        responseScreen: true,
+        record: {
+          recordProgram : "rec",  
+          threshold: 0,
+        },
+    
+        notifications: {
+          ASSISTANT_ACTIVATED: "HOTWORD_PAUSE",
+          ASSISTANT_DEACTIVATED: "HOTWORD_RESUME",
+        },
+
+        action: {
+          "com.example.intents.REBOOT" : {
+            command: "REBOOT"
+          },
+          "com.example.intents.PAGE" : {
+            command: "PAGE"
+          },
+          "com.example.commands.Number" : {
+            command: "NUMBER"
+          },
+        },
+        command: {
+          "NUMBER": {
+            notificationExec: {
+              notification: (params, key) => {
+                console.log('params', params)
+                console.log('key', key)
+                if(params.number && !isNaN(params.number)){
+                  console.log('PAGE_CHANGED execute in config');
+                  return "PAGE_CHANGED";
+                }else{
+                  console.log('number is not number in notification');
+                }
+              },
+              payload: (params, key)=> {
+                console.log('options params', params)
+                console.log('options key', key)
+                if(params.number && !isNaN(params.number)){
+                  console.log('PAGE_CHANGED execute in config', params.number);
+                  return Number(params.number);
+                }else{
+                  console.log('number is not number in payload');
+                }
+              },
+            },
+            shellExec: {
+              exec: (params, key) => {
+                console.log('shell exec');
+                return "echo '!!!!!!!!!!!!!!!!'"
+              },
+              options: (params, key)=> {
+                return "now"
+              },
+            }
+          }
+        },
+      },
+    },
+
+		{
+			module: "helloworld",
+			position: "middle_center"
+    },
 		{
 			module: "calendar",
 			header: "US Holidays",
@@ -51,30 +137,30 @@ var config = {
 		},
 		{
 			module: "compliments",
-			position: "lower_third"
+			position: "top_left"
 		},
-		{
-			module: "currentweather",
-			position: "top_right",
-			config: {
-				location: "New York",
-				locationID: "",  //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
-				appid: "YOUR_OPENWEATHER_API_KEY"
-			}
-		},
-		{
-			module: "weatherforecast",
-			position: "top_right",
-			header: "Weather Forecast",
-			config: {
-				location: "New York",
-				locationID: "5128581",  //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
-				appid: "YOUR_OPENWEATHER_API_KEY"
-			}
-		},
+		// {
+		// 	module: "currentweather",
+		// 	position: "top_right",
+		// 	config: {
+		// 		location: "New York",
+		// 		locationID: "",  //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
+		// 		appid: "YOUR_OPENWEATHER_API_KEY"
+		// 	}
+		// },
+		// {
+		// 	module: "weatherforecast",
+		// 	position: "top_left",
+		// 	header: "Weather Forecast",
+		// 	config: {
+		// 		location: "New York",
+		// 		locationID: "5128581",  //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
+		// 		appid: "YOUR_OPENWEATHER_API_KEY"
+		// 	}
+		// },
 		{
 			module: "newsfeed",
-			position: "bottom_bar",
+			position: "middle_center",
 			config: {
 				feeds: [
 					{
@@ -87,7 +173,41 @@ var config = {
 				broadcastNewsFeeds: true,
 				broadcastNewsUpdates: true
 			}
-		},
+    },
+    
+    {
+      module: "MMM-Hotword",
+      position: "bottom_right",
+      config: {
+        chimeOnFinish: null,
+        mic: {
+          recordProgram: "rec",
+          // device: "plughw:1"
+        },
+        models: [
+          {
+            hotwords    : "computer",
+            file        : "computer.umdl",
+            sensitivity : "0.5",
+          },
+        ],
+        commands: {
+          "computer": {
+            notificationExec: {
+              notification: "ASSISTANT_ACTIVATE",
+              payload: (detected, afterRecord) => {
+                return {profile:"default"}
+              }
+            },
+            restart:false,
+            afterRecordLimit:0
+          }
+        }
+      }
+    },
+
+
+
 	]
 
 };

@@ -81,7 +81,24 @@ var config = {
             command: "NUMBER"
           },
         },
+        transcriptionHook: {
+          "HELLO": {
+            pattern: "hello",
+            command: "HELLO"
+          },
+        },
         command: {
+          "HELLO":{
+            shellExec: {
+              exec: (params, key) => {
+                console.log('shell exec');
+                return "echo '!!!!!!hello was said and transcriptionHook Done'"
+              },
+              options: (params, key)=> {
+                return "now"
+              },
+            }
+          },
           "NUMBER": {
             notificationExec: {
               notification: (params, key) => {
@@ -183,6 +200,7 @@ var config = {
         mic: {
           recordProgram: "rec",
           // device: "plughw:1"
+          verbose: true
         },
         models: [
           {

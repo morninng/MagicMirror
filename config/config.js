@@ -31,6 +31,7 @@ var config = {
       config: {
               modules:
                   [
+                   [],
                    ["newsfeed", "compliments"],
                    [ "calendar" ],
                    ["helloworld"]
@@ -104,7 +105,7 @@ var config = {
               notification: (params, key) => {
                 console.log('params', params)
                 console.log('key', key)
-                if(params.number && !isNaN(params.number)){
+                if(params.number && !isNaN(params.number) && params.number < 4){
                   console.log('PAGE_CHANGED execute in config');
                   return "PAGE_CHANGED";
                 }else{
@@ -217,6 +218,14 @@ var config = {
                 return {profile:"default"}
               }
             },
+            moduleExec: {
+              module: ["MMM-pages"],
+              exec: (module, hotword, file) => {
+                console.log('hotword', hotword);
+                console.log('file', file);
+                module.goto_home_if_blankpage();
+              }
+            },
             restart:false,
             afterRecordLimit:0
           }
@@ -226,7 +235,7 @@ var config = {
 
 
 
-	]
+  ]
 
 };
 

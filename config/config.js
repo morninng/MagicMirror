@@ -32,8 +32,12 @@ var config = {
               modules:
                   [
                    [],
-                   ["newsfeed", "compliments"],
+                   ["clock", ],
+                   ["clock"],
                    [ "calendar" ],
+                   [ "whether_todo" ],
+                   [ "wotkout" ],
+                   ["newsfeed", "compliments"],
                    ["helloworld"]
                   ],
               fixed: ["MMM-AssistantMk2", "MMM-Hotword"],
@@ -55,12 +59,19 @@ var config = {
       module: "MMM-AssistantMk2",
       position: "top_right",
       useGactionCLI: true,
-      projectId: "nec-investigation", // need update to own project id
-      deviceModelId: "nec-investigation-nec-investigate-demo-mjujeb", // need update to own deviceModelId
+      projectId: "magic-mirror-demo-2", // need update to own project id
+      deviceModelId: "magic-mirror-demo-2-mirror-273vzs", // need update to own deviceModelId
       deviceInstanceId: "my_led_1", // need update to own deviceInstanceId
       config: {
         // useWelcomeMessage: "brief today",
         responseScreen: true,
+        profiles: {
+          "default" : { // profile name.
+            profileFile: "default.json", // https://github.com/eouia/MMM-AssistantMk2/wiki/Configuration
+            lang: "ja-JP"
+          },
+
+        },
         record: {
           recordProgram : "rec",  
           threshold: 0,
@@ -78,8 +89,14 @@ var config = {
           "com.example.intents.PAGE" : {
             command: "PAGE"
           },
+          "com.example.commands.Calendar" : {
+            command: "Calendar"
+          },
           "com.example.commands.Number" : {
             command: "NUMBER"
+          },
+          "com.example.commands.Time" : {
+            command: "Time"
           },
         },
         transcriptionHook: {
@@ -99,6 +116,26 @@ var config = {
                 return "now"
               },
             }
+          },
+          "Time":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 2;
+              },
+            },
+          },
+          "Calendar":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 3;
+              },
+            },
           },
           "NUMBER": {
             notificationExec: {

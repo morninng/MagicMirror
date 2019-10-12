@@ -32,13 +32,14 @@ var config = {
               modules:
                   [
                    [],
-                   ["clock", ],
-                   ["clock"],
-                   [ "calendar" ],
-                   [ "whether_todo" ],
-                   [ "wotkout" ],
-                   ["newsfeed", "compliments"],
-                   ["helloworld"]
+                   [], // home
+                   ["clock"], // 1 page
+                   [ "MMM-EasyPix" ], // 2 page calendar
+                   [ "MMM-WeatherBackground", "currentweather"], // 3 page
+                   [ "wotkout" ], // 4 page
+                  //  [ "calendar" ], 
+                  //  ["newsfeed", "compliments"],
+                  //  ["helloworld"]
                   ],
               fixed: ["MMM-AssistantMk2", "MMM-Hotword"],
       }
@@ -194,15 +195,15 @@ var config = {
 			module: "compliments",
 			position: "top_left"
 		},
-		// {
-		// 	module: "currentweather",
-		// 	position: "top_right",
-		// 	config: {
-		// 		location: "New York",
-		// 		locationID: "",  //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
-		// 		appid: "YOUR_OPENWEATHER_API_KEY"
-		// 	}
-		// },
+		{
+			module: "currentweather",
+			position: "top_right",
+			config: {
+				location: "Tokyo, JP",
+				locationID: "",  //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
+				appid: "da3cbbaf92dcd0f45fe7f3d7799ffc88"
+			}
+		},
 		// {
 		// 	module: "weatherforecast",
 		// 	position: "top_left",
@@ -269,8 +270,21 @@ var config = {
         }
       }
     },
-
-
+    {
+      module: "MMM-EasyPix",
+      position: "top_center",
+      config: {
+        picName: "18.jpg", // Enter the picture file name.
+        maxWidth: "75%",        // Size picture precisely. Retains aspect ratio.
+      }
+    },
+    {
+      module: "MMM-WeatherBackground",
+      config: {
+        targetDOM: ".fullscreen",
+        source:"currentweather"
+      }
+    },
 
   ]
 

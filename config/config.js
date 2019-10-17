@@ -34,24 +34,13 @@ var config = {
                    [],
                    [ "clock", "currentweather"], // home
                    ["clock"], // 1 page 例:「 時間を教えて。」
-                   [ "MMM-EasyPix" ], // 2 page calendar "カレンダー"見せて.」
-                   [ "MMM-WeatherBackground", "currentweather"], // 3 page "天気"出して.」
-                   [ "MMM-LocalVideoPlayer" ], // 4 page "ワークアウト"
-                  //  [ "calendar" ], 
-                  //  ["newsfeed", "compliments"],
-                  //  ["helloworld"]
+                   [ "MMM-EasyPix2" ], // 2 page calendar "カレンダー"見せて.」
+                   [ "MMM-EasyPix"], // 3 page "天気"出して.」
+                   [ "MMM-EasyPix3" ], // 4 page "ワークアウト"
                   ],
               fixed: ["MMM-AssistantMk2", "MMM-Hotword"],
       }
     },
-
-		// {
-		// 	module: "alert",
-		// },
-		// {
-		// 	module: "updatenotification",
-		// 	position: "top_bar"
-		// },
 		{
 			module: "clock",
 			position: "top_left"
@@ -115,24 +104,7 @@ var config = {
             command: "Shutdown"
           },
         },
-        transcriptionHook: {
-          "HELLO": {
-            pattern: "hello",
-            command: "HELLO"
-          },
-        },
         command: {
-          "HELLO":{
-            shellExec: {
-              exec: (params, key) => {
-                console.log('shell exec');
-                return "echo '!!!!!!hello was said and transcriptionHook Done'"
-              },
-              options: (params, key)=> {
-                return "now"
-              },
-            }
-          },
           "Home":{
             notificationExec: {
               notification: (params, key) => {
@@ -171,13 +143,7 @@ var config = {
               payload: (params, key)=> {
                 return 4;
               },
-            },
-            moduleExec: {
-              module: ["MMM-WeatherBackground"],
-              exec: (module) => {
-                module.show();
-              }
-            },
+            }
           },
           "Workout":{
             notificationExec: {
@@ -235,11 +201,6 @@ var config = {
         },
       },
     },
-
-		{
-			module: "helloworld",
-			position: "middle_center"
-    },
 		{
 			module: "calendar",
 			header: "US Holidays",
@@ -253,10 +214,6 @@ var config = {
 			}
 		},
 		{
-			module: "compliments",
-			position: "top_left"
-		},
-		{
 			module: "currentweather",
 			position: "top_right",
 			config: {
@@ -265,32 +222,6 @@ var config = {
 				appid: "da3cbbaf92dcd0f45fe7f3d7799ffc88"
 			}
 		},
-		// {
-		// 	module: "weatherforecast",
-		// 	position: "top_left",
-		// 	header: "Weather Forecast",
-		// 	config: {
-		// 		location: "New York",
-		// 		locationID: "5128581",  //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
-		// 		appid: "YOUR_OPENWEATHER_API_KEY"
-		// 	}
-		// },
-		{
-			module: "newsfeed",
-			position: "middle_center",
-			config: {
-				feeds: [
-					{
-						title: "New York Times",
-						url: "http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"
-					}
-				],
-				showSourceTitle: true,
-				showPublishDate: true,
-				broadcastNewsFeeds: true,
-				broadcastNewsUpdates: true
-			}
-    },
     
     {
       module: "MMM-Hotword",
@@ -332,14 +263,15 @@ var config = {
       }
     },
     {
-      module: "MMM-LocalVideoPlayer",
+      module: "MMM-EasyPix",
       position: "top_center",
       config: {
+        picName: "Cloudy.gif", // Enter the picture file name.
+        maxWidth: "75%",        // Size picture precisely. Retains aspect ratio.
       }
     },
-
     {
-      module: "MMM-EasyPix",
+      module: "MMM-EasyPix2",
       position: "top_center",
       config: {
         picName: "Sample_Calendar.png", // Enter the picture file name.
@@ -347,11 +279,11 @@ var config = {
       }
     },
     {
-      module: "MMM-WeatherBackground",
+      module: "MMM-EasyPix3",
+      position: "top_center",
       config: {
-        targetDOM: null,
-        source:"currentweather",
-        // notification: "AAA"
+        picName: "Yoga.gif", // Enter the picture file name.
+        maxWidth: "75%",        // Size picture precisely. Retains aspect ratio.
       }
     },
 

@@ -32,11 +32,11 @@ var config = {
               modules:
                   [
                    [],
-                   [], // home
-                   ["clock"], // 1 page
-                   [ "MMM-EasyPix" ], // 2 page calendar
-                   [ "MMM-WeatherBackground", "currentweather"], // 3 page
-                   [ "wotkout" ], // 4 page
+                   [ "clock", "currentweather"], // home
+                   ["clock"], // 1 page 例:「 時間を教えて。」
+                   [ "MMM-EasyPix" ], // 2 page calendar "カレンダー"見せて.」
+                   [ "MMM-WeatherBackground", "currentweather"], // 3 page "天気"出して.」
+                   [ "MMM-LocalVideoPlayer" ], // 4 page "ワークアウト"
                   //  [ "calendar" ], 
                   //  ["newsfeed", "compliments"],
                   //  ["helloworld"]
@@ -99,6 +99,21 @@ var config = {
           "com.example.commands.Time" : {
             command: "Time"
           },
+          "com.example.commands.Home" : {
+            command: "Home"
+          },
+          "com.example.commands.Workout" : {
+            command: "Workout"
+          },
+          "com.example.commands.Bye" : {
+            command: "Bye"
+          },
+          "com.example.commands.Weather" : {
+            command: "Weather"
+          },
+          "com.example.commands.Shutdown" : {
+            command: "Shutdown"
+          },
         },
         transcriptionHook: {
           "HELLO": {
@@ -118,6 +133,16 @@ var config = {
               },
             }
           },
+          "Home":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 1;
+              },
+            },
+          },
           "Time":{
             notificationExec: {
               notification: (params, key) => {
@@ -135,6 +160,42 @@ var config = {
               },
               payload: (params, key)=> {
                 return 3;
+              },
+            },
+          },
+          "Weather":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 4;
+              },
+            },
+            moduleExec: {
+              module: ["MMM-WeatherBackground"],
+              exec: (module) => {
+                module.show();
+              }
+            },
+          },
+          "Workout":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 5;
+              },
+            },
+          },
+          "Bye":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 0;
               },
             },
           },
@@ -271,18 +332,26 @@ var config = {
       }
     },
     {
+      module: "MMM-LocalVideoPlayer",
+      position: "top_center",
+      config: {
+      }
+    },
+
+    {
       module: "MMM-EasyPix",
       position: "top_center",
       config: {
-        picName: "18.jpg", // Enter the picture file name.
+        picName: "Sample_Calendar.png", // Enter the picture file name.
         maxWidth: "75%",        // Size picture precisely. Retains aspect ratio.
       }
     },
     {
       module: "MMM-WeatherBackground",
       config: {
-        targetDOM: ".fullscreen",
-        source:"currentweather"
+        targetDOM: null,
+        source:"currentweather",
+        // notification: "AAA"
       }
     },
 

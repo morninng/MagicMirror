@@ -32,9 +32,14 @@ var config = {
               modules:
                   [
                    [],
-                   ["newsfeed", "compliments"],
-                   [ "calendar" ],
-                   ["helloworld"]
+                   [ "clock", "currentweather"], // home
+                   ["clock"], // 1 page 例:「 時間を教えて。」
+                   [ "MMM-EasyPix" ], // 2 page calendar "カレンダー"見せて.」
+                   [ "MMM-WeatherBackground", "currentweather"], // 3 page "天気"出して.」
+                   [ "MMM-LocalVideoPlayer" ], // 4 page "ワークアウト"
+                  //  [ "calendar" ], 
+                  //  ["newsfeed", "compliments"],
+                  //  ["helloworld"]
                   ],
               fixed: ["MMM-AssistantMk2", "MMM-Hotword"],
       }
@@ -55,12 +60,19 @@ var config = {
       module: "MMM-AssistantMk2",
       position: "top_right",
       useGactionCLI: true,
-      projectId: "nec-investigation", // need update to own project id
-      deviceModelId: "nec-investigation-nec-investigate-demo-mjujeb", // need update to own deviceModelId
+      projectId: "magic-mirror-demo-2", // need update to own project id
+      deviceModelId: "magic-mirror-demo-2-mirror-273vzs", // need update to own deviceModelId
       deviceInstanceId: "my_led_1", // need update to own deviceInstanceId
       config: {
         // useWelcomeMessage: "brief today",
         responseScreen: true,
+        profiles: {
+          "default" : { // profile name.
+            profileFile: "default.json", // https://github.com/eouia/MMM-AssistantMk2/wiki/Configuration
+            lang: "ja-JP"
+          },
+
+        },
         record: {
           recordProgram : "rec",  
           threshold: 0,
@@ -78,8 +90,29 @@ var config = {
           "com.example.intents.PAGE" : {
             command: "PAGE"
           },
+          "com.example.commands.Calendar" : {
+            command: "Calendar"
+          },
           "com.example.commands.Number" : {
             command: "NUMBER"
+          },
+          "com.example.commands.Time" : {
+            command: "Time"
+          },
+          "com.example.commands.Home" : {
+            command: "Home"
+          },
+          "com.example.commands.Workout" : {
+            command: "Workout"
+          },
+          "com.example.commands.Bye" : {
+            command: "Bye"
+          },
+          "com.example.commands.Weather" : {
+            command: "Weather"
+          },
+          "com.example.commands.Shutdown" : {
+            command: "Shutdown"
           },
         },
         transcriptionHook: {
@@ -99,6 +132,72 @@ var config = {
                 return "now"
               },
             }
+          },
+          "Home":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 1;
+              },
+            },
+          },
+          "Time":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 2;
+              },
+            },
+          },
+          "Calendar":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 3;
+              },
+            },
+          },
+          "Weather":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 4;
+              },
+            },
+            moduleExec: {
+              module: ["MMM-WeatherBackground"],
+              exec: (module) => {
+                module.show();
+              }
+            },
+          },
+          "Workout":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 5;
+              },
+            },
+          },
+          "Bye":{
+            notificationExec: {
+              notification: (params, key) => {
+                return "PAGE_CHANGED";
+              },
+              payload: (params, key)=> {
+                return 0;
+              },
+            },
           },
           "NUMBER": {
             notificationExec: {
@@ -157,15 +256,15 @@ var config = {
 			module: "compliments",
 			position: "top_left"
 		},
-		// {
-		// 	module: "currentweather",
-		// 	position: "top_right",
-		// 	config: {
-		// 		location: "New York",
-		// 		locationID: "",  //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
-		// 		appid: "YOUR_OPENWEATHER_API_KEY"
-		// 	}
-		// },
+		{
+			module: "currentweather",
+			position: "top_right",
+			config: {
+				location: "Tokyo, JP",
+				locationID: "",  //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
+				appid: "da3cbbaf92dcd0f45fe7f3d7799ffc88"
+			}
+		},
 		// {
 		// 	module: "weatherforecast",
 		// 	position: "top_left",
@@ -232,8 +331,29 @@ var config = {
         }
       }
     },
+    {
+      module: "MMM-LocalVideoPlayer",
+      position: "top_center",
+      config: {
+      }
+    },
 
-
+    {
+      module: "MMM-EasyPix",
+      position: "top_center",
+      config: {
+        picName: "Sample_Calendar.png", // Enter the picture file name.
+        maxWidth: "75%",        // Size picture precisely. Retains aspect ratio.
+      }
+    },
+    {
+      module: "MMM-WeatherBackground",
+      config: {
+        targetDOM: null,
+        source:"currentweather",
+        // notification: "AAA"
+      }
+    },
 
   ]
 

@@ -235,13 +235,13 @@ var config = {
         },
         models: [
           {
-            hotwords    : "computer",
+            hotwords    : "wakeup",
             file        : "computer.umdl",
             sensitivity : "0.5",
           },
         ],
         commands: {
-          "computer": {
+          "wakeup": {
             notificationExec: {
               notification: "ASSISTANT_ACTIVATE",
               payload: (detected, afterRecord) => {
